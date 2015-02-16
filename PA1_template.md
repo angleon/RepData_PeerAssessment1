@@ -290,62 +290,20 @@ act_new[act_new$wd == "Sunday" | act_new$wd == "Saturday" ,5]<- factor("weekend"
 act_new[!(act_new$wd == "Sunday" | act_new$wd == "Saturday"),5 ]<- factor("weekday")
 
 
-
-act_new_we <- subset(act_new, fwd == "weekend") 
-act_new_wd <- subset(act_new, fwd == "weekday") 
-
-str(act_new_wd)
-```
-
-```
-## 'data.frame':	12960 obs. of  5 variables:
-##  $ steps   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
-##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
-##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
-##  $ wd      : chr  "Monday" "Monday" "Monday" "Monday" ...
-##  $ fwd     : Factor w/ 2 levels "weekday","weekend": 1 1 1 1 1 1 1 1 1 1 ...
-```
-
-```r
-str(act_new_we)
-```
-
-```
-## 'data.frame':	4608 obs. of  5 variables:
-##  $ steps   : num  0 0 0 0 0 0 0 0 0 0 ...
-##  $ date    : Date, format: "2012-10-06" "2012-10-06" ...
-##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
-##  $ wd      : chr  "Saturday" "Saturday" "Saturday" "Saturday" ...
-##  $ fwd     : Factor w/ 2 levels "weekday","weekend": 2 2 2 2 2 2 2 2 2 2 ...
-```
-
-```r
-dailyact_we<-tapply(act_new_we$steps, act_new_we$interval, mean)
-dailyact_wd<-tapply(act_new_wd$steps, act_new_wd$interval, mean)
-par(mfrow=c(2,1))
+steps_weekdays <- aggregate(steps ~ interval + fwd, act_new, mean)
 ```
 
 
 Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 
 ```r
-plot(y = dailyact_wd, x = names(dailyact_wd), type = "l", xlab = "5-Minute Interval", 
-     main = "Daily Activity Pattern on Weekdays", ylab = "Average number of steps",
-     xlim =c(0,3000),
-     ylim =c(0, 250))
+library(lattice)
+xyplot(steps ~ interval | fwd, steps_weekdays, layout = c(1, 2),
+       col = "blue", xlab = "Interval", ylab = "Average number of steps", 
+       type = "l", lwd = 2)
 ```
 
 ![](PA1_template_files/figure-html/scatterplot-1.png) 
-
-
-```r
-plot(y = dailyact_we, x = names(dailyact_we), type = "l", xlab = "5-Minute Interval", 
-     main = "Daily Activity Pattern on Weekends", ylab = "Average number of steps", 
-     xlim =c(0,3000),
-     ylim =c(0, 250))
-```
-
-![](PA1_template_files/figure-html/scatterplot2-1.png) 
 
 
 
