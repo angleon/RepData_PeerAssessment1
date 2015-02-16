@@ -15,6 +15,14 @@ Load input data from a zip file from the current R working directory.
 
 
 ```r
+Sys.setlocale("LC_TIME", "English")
+```
+
+```
+## [1] "English_United States.1252"
+```
+
+```r
 filename <- unzip("activity.zip")
 activity <- read.csv(filename, stringsAsFactors = FALSE)
 str(activity)
@@ -158,7 +166,20 @@ act_new <- activity
 act_new[which(is.na(act_new$steps)),1]<-
         dailyact[as.character(act_new[which(is.na(act_new$steps)),3])]
 
+head(act_new)
+```
 
+```
+##       steps       date interval
+## 1 1.7169811 2012-10-01        0
+## 2 0.3396226 2012-10-01        5
+## 3 0.1320755 2012-10-01       10
+## 4 0.1509434 2012-10-01       15
+## 5 0.0754717 2012-10-01       20
+## 6 2.0943396 2012-10-01       25
+```
+
+```r
 sum(is.na(act_new))
 ```
 
@@ -247,11 +268,24 @@ str(act_new)
 ##  $ steps   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
 ##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
 ##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
-##  $ wd      : chr  "lunes" "lunes" "lunes" "lunes" ...
+##  $ wd      : chr  "Monday" "Monday" "Monday" "Monday" ...
 ```
 
 ```r
 act_new$fwd<- as.factor(c("weekend", "weekday"))
+str(act_new)
+```
+
+```
+## 'data.frame':	17568 obs. of  5 variables:
+##  $ steps   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
+##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+##  $ wd      : chr  "Monday" "Monday" "Monday" "Monday" ...
+##  $ fwd     : Factor w/ 2 levels "weekday","weekend": 2 1 2 1 2 1 2 1 2 1 ...
+```
+
+```r
 act_new[act_new$wd == "Sunday" | act_new$wd == "Saturday" ,5]<- factor("weekend")
 act_new[!(act_new$wd == "Sunday" | act_new$wd == "Saturday"),5 ]<- factor("weekday")
 
@@ -264,11 +298,11 @@ str(act_new_wd)
 ```
 
 ```
-## 'data.frame':	17568 obs. of  5 variables:
+## 'data.frame':	12960 obs. of  5 variables:
 ##  $ steps   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
 ##  $ date    : Date, format: "2012-10-01" "2012-10-01" ...
 ##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
-##  $ wd      : chr  "lunes" "lunes" "lunes" "lunes" ...
+##  $ wd      : chr  "Monday" "Monday" "Monday" "Monday" ...
 ##  $ fwd     : Factor w/ 2 levels "weekday","weekend": 1 1 1 1 1 1 1 1 1 1 ...
 ```
 
@@ -277,12 +311,12 @@ str(act_new_we)
 ```
 
 ```
-## 'data.frame':	0 obs. of  5 variables:
-##  $ steps   : num 
-##  $ date    :Class 'Date'  num(0) 
-##  $ interval: int 
-##  $ wd      : chr 
-##  $ fwd     : Factor w/ 2 levels "weekday","weekend":
+## 'data.frame':	4608 obs. of  5 variables:
+##  $ steps   : num  0 0 0 0 0 0 0 0 0 0 ...
+##  $ date    : Date, format: "2012-10-06" "2012-10-06" ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+##  $ wd      : chr  "Saturday" "Saturday" "Saturday" "Saturday" ...
+##  $ fwd     : Factor w/ 2 levels "weekday","weekend": 2 2 2 2 2 2 2 2 2 2 ...
 ```
 
 ```r

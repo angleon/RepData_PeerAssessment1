@@ -19,6 +19,7 @@ This assignment makes use of data from a personal activity monitoring device. Th
 Load input data from a zip file from the current R working directory.
 
 ```{r}
+Sys.setlocale("LC_TIME", "English")
 filename <- unzip("activity.zip")
 activity <- read.csv(filename, stringsAsFactors = FALSE)
 str(activity)
@@ -106,6 +107,7 @@ act_new <- activity
 act_new[which(is.na(act_new$steps)),1]<-
         dailyact[as.character(act_new[which(is.na(act_new$steps)),3])]
 
+head(act_new)
 
 sum(is.na(act_new))
 
@@ -160,6 +162,8 @@ str(act_new)
 
 
 act_new$fwd<- as.factor(c("weekend", "weekday"))
+str(act_new)
+
 act_new[act_new$wd == "Sunday" | act_new$wd == "Saturday" ,5]<- factor("weekend")
 act_new[!(act_new$wd == "Sunday" | act_new$wd == "Saturday"),5 ]<- factor("weekday")
 
